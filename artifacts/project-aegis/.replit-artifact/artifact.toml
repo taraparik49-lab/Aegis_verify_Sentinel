@@ -1,0 +1,28 @@
+kind = "web"
+previewPath = "/"
+title = "Project Aegis"
+description = "A local-first regulatory verification workstation for institutional application dossiers. Reviewers can inspect evidence-linked findings, run deterministic synthetic rules, resolve escalations, and export reports without implying real-world approval or authenticity."
+version = "1.0.0"
+id = "artifacts/project-aegis"
+router = "path"
+
+[[services]]
+name = "web"
+paths = [ "/" ]
+localPort = 24650
+
+[services.development]
+run = "pnpm --filter @workspace/project-aegis run dev"
+
+[services.production]
+build = [ "pnpm", "--filter", "@workspace/project-aegis", "run", "build" ]
+serve = "static"
+publicDir = "artifacts/project-aegis/dist/public"
+
+[[services.production.rewrites]]
+from = "/*"
+to = "/index.html"
+
+[services.env]
+PORT = "24650"
+BASE_PATH = "/"

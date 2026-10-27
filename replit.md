@@ -1,44 +1,50 @@
-# [Project name]
+# Project Aegis
 
-_Replace the heading above with the project's name, and this line with one sentence describing what this app does for users._
+A local-first demonstration workstation for reviewing fictional regulatory dossier evidence, rule references, findings, and human-review actions.
 
 ## Run & Operate
 
-- `pnpm --filter @workspace/api-server run dev` — run the API server (port 5000)
-- `pnpm run typecheck` — full typecheck across all packages
-- `pnpm run build` — typecheck + build all packages
-- `pnpm --filter @workspace/api-spec run codegen` — regenerate API hooks and Zod schemas from the OpenAPI spec
-- `pnpm --filter @workspace/db run push` — push DB schema changes (dev only)
-- Required env: `DATABASE_URL` — Postgres connection string
+- Use the managed `artifacts/project-aegis: web` workflow to run the preview. Its command is `pnpm --filter @workspace/project-aegis run dev`; the workflow supplies the preview environment.
+- `pnpm --filter @workspace/project-aegis run typecheck` — typecheck Aegis.
+- `pnpm --filter @workspace/project-aegis run test` — run Aegis unit tests.
+- Project Aegis does not require a database URL, API server, or external credentials.
+- The separate API Server artifact is scaffolded but is not used by this local-first demo.
 
 ## Stack
 
-- pnpm workspaces, Node.js 24, TypeScript 5.9
-- API: Express 5
-- DB: PostgreSQL + Drizzle ORM
-- Validation: Zod (`zod/v4`), `drizzle-zod`
-- API codegen: Orval (from OpenAPI spec)
-- Build: esbuild (CJS bundle)
+- pnpm workspace, Node.js 24, TypeScript, React, Vite, Wouter, Tailwind CSS.
+- PDF text-layer extraction uses PDF.js in the browser; scanned-page OCR is not implemented.
+- Workspace metadata is stored in browser localStorage; uploaded source files are stored in browser IndexedDB.
 
 ## Where things live
 
-_Populate as you build — short repo map plus pointers to the source-of-truth file for DB schema, API contracts, theme files, etc._
+- `artifacts/project-aegis/src/pages/WorkspacePages.tsx` — dashboard, dossier registry/detail, reviewer queue, rule register, analytics, and audit screens.
+- `artifacts/project-aegis/src/lib/model.ts` — local workspace model, fictional A–H scenario fixtures, and audit history.
+- `artifacts/project-aegis/src/lib/engine.ts` — deterministic synthetic rule evaluation and upload validation.
+- `artifacts/project-aegis/src/lib/pdf-processing.ts` — browser PDF text-layer extraction.
+- `artifacts/project-aegis/src/lib/report.ts` — dossier PDF and findings CSV export.
+- `artifacts/project-aegis/src/index.css` — shared visual theme and responsive layout.
 
 ## Architecture decisions
 
-_Populate as you build — non-obvious choices a reader couldn't infer from the code (3-5 bullets)._
+- The demo deliberately runs without server persistence or accounts; browser-local files are not appropriate for confidential production records.
+- Fictional rule text and scenarios are labeled synthetic. Matching claims are never presented as issuer verification or approval.
+- Only institution-name extraction from text-layer PDFs is attempted; scanned pages and image OCR require human inspection.
+- Audit chaining is a local consistency aid, not a security boundary or tamper-proof ledger.
 
 ## Product
 
-_Describe the high-level user-facing capabilities of this app once they exist._
+- Review eight fictional case paths; create local dossiers; upload and preview PDF or image sources; compare extracted claims; record corrections and classifications with reasons; track findings and review dispositions; version synthetic rule references; export reports; inspect local audit history.
 
 ## User preferences
 
-_Populate as you build — explicit user instructions worth remembering across sessions._
+No additional standing preferences recorded.
 
 ## Gotchas
 
-_Populate as you build — sharp edges, "always run X before Y" rules._
+- Use the managed artifact workflow for the preview rather than starting a duplicate server; it injects the path and port settings used by the proxy.
+- Resetting the demo deletes local metadata and uploaded source files from this browser profile.
+- The only attached source was the master build prompt; no separate official rulebook or reference flowchart was supplied.
 
 ## Pointers
 
